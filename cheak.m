@@ -2,7 +2,7 @@ function cheak(hObject, eventdata, handles)
 global StartFlag TimeCount BoomNum BomPosition;
 if StartFlag==1
     tag = get(hObject,'tag');
-    %¼ÆËãµ±Ç°Î»ÖÃ×ø±ê
+    %è®¡ç®—å½“å‰ä½ç½®åæ ‡
     if length(tag)==4
         x = str2double(tag(3))+1;
         y = str2double(tag(4))+1;
@@ -10,34 +10,32 @@ if StartFlag==1
         x = 1;
         y = str2double(tag(3))+1;
     end
-    %²éÕÒµ±Ç°Î»ÖÃµÄÊıÖµ
+    %æŸ¥æ‰¾å½“å‰ä½ç½®çš„æ•°å€¼
     value = BomPosition( x, y );
         
-    if value == -1  %Èç¹ûÎªµØÀ×
+    if value == -1  %å¦‚æœä¸ºåœ°é›·
        set(hObject,'string','*','foregroundcolor','red');
-       StartFlag=0; %¿ªÊ¼ÓÎÏ·±êÖ¾ÖÃÎ»1
-       questdlg(['ÓÎÏ·Ê§°Ü£¬ÓÃÊ±',num2str(TimeCount),'s'],'ÓÎÏ·Ê§°Ü','È·¶¨','È·¶¨'); 
-    elseif value == 0   %Èç¹ûÎª0À×Î»ÖÃ£¬µ÷ÓÃº¯Êı×Ô¶¯Ñ°ÕÒ0À×
-        Map_Zero(hObject, eventdata, handles ,x-1,y-1);
-    else %ÆäËûÇé¿ö
+       StartFlag=0; %å¼€å§‹æ¸¸æˆæ ‡å¿—ç½®ä½1
+       questdlg(['æ¸¸æˆå¤±è´¥ï¼Œç”¨æ—¶',num2str(TimeCount),'s'],'æ¸¸æˆå¤±è´¥','ç¡®å®š','ç¡®å®š'); 
+    else %å…¶ä»–æƒ…å†µ
        set(hObject,'string',num2str(value),'foregroundcolor','black');
     end
     
-    %¼ì²âÊÇ·ñÍê³ÉÓÎÏ·
+    %æ£€æµ‹æ˜¯å¦å®Œæˆæ¸¸æˆ
     FinishCount=0;
     MarkCount=0;
     for i=0:99 
         str=eval(['get(handles.xy',num2str(i), ',''string'');']);
         if(str~=' ')
-            FinishCount=FinishCount+1;  %¼ÆËãÒÑ¾­²éÕÒÁËµÄÎ»ÖÃÊıÁ¿
+            FinishCount=FinishCount+1;  %è®¡ç®—å·²ç»æŸ¥æ‰¾äº†çš„ä½ç½®æ•°é‡
         end
-        if(strcmp(str,'±ê¼Ç') == 1)   %¼ÆËã±ê¼ÇÎªÀ×µÄÎ»ÖÃÊıÁ¿
+        if(strcmp(str,'æ ‡è®°') == 1)   %è®¡ç®—æ ‡è®°ä¸ºé›·çš„ä½ç½®æ•°é‡
             MarkCount=MarkCount+1;
         end
     end
-    if  FinishCount==100 && MarkCount== BoomNum %ÒÑ¾­²éÕÒËùÓĞÎ»ÖÃ£¬²¢ÇÒ±ê¼ÇÊıÄ¿ÕıÈ·
+    if  FinishCount==100 && MarkCount== BoomNum %å·²ç»æŸ¥æ‰¾æ‰€æœ‰ä½ç½®ï¼Œå¹¶ä¸”æ ‡è®°æ•°ç›®æ­£ç¡®
         StartFlag=0;
-        questdlg(['ÓÎÏ·³É¹¦£¬ÓÃÊ±',num2str(TimeCount),'s'],'ÓÎÏ·³É¹¦','È·¶¨','È·¶¨');
+        questdlg(['æ¸¸æˆæˆåŠŸï¼Œç”¨æ—¶',num2str(TimeCount),'s'],'æ¸¸æˆæˆåŠŸ','ç¡®å®š','ç¡®å®š');
     end
 end
 end
