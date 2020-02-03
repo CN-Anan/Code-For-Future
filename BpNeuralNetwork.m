@@ -1,4 +1,5 @@
-% ÑµÁ·Éñ¾­ÍøÂç²¢ÇÒ½øĞĞ·ÂÕæÔ¤²â
+% è®­ç»ƒç¥ç»ç½‘ç»œå¹¶ä¸”è¿›è¡Œä»¿çœŸé¢„æµ‹
+% ministæ•°æ®é›†ä¸‹è½½åœ°å€ï¼šhttp://yann.lecun.com/exdb/mnist/
 clc
 clear 
 
@@ -8,31 +9,31 @@ labels = loadMNISTLabels('train-labels.idx1-ubyte');
 numTrain = numel(labels)*0.001;
 numTest  = numel(labels)-numTrain;
 
-% ÑµÁ·BPÉñ¾­ÍøÂç·ÖÀà
-data_Xtrain = images(:,1:numTrain);     %¼ÓÔØÑµÁ·µÄÊäÈëÊı¾İ
-data_Ytrain = labels(1:numTrain,1)';    %¼ÓÔØÑµÁ·µÄÊä³öÊı¾İ
-data_Xtest = images(:,numTrain+1:end);    %¼ÓÔØ²âÊÔµÄÊäÈëÊı¾İ
-data_Ytest = labels(numTrain+1:end,1)';    %¼ÓÔØ²âÊÔµÄÊä³öÊı¾İ
-clear images labels %Çå³ı±äÁ¿£¬½ÚÊ¡ÄÚ´æ
-%ÓÉÓÚÏµÍ³»áÓÅ»¯µôÕûĞĞÈ«ÊÇ0µÄÎ¬¶È£¬ËùÒÔ¶ÔÕûĞĞÈ«ÊÇ0µÄÎ¬¶ÈÊ×ÁĞÌí¼ÓÒ»¸öÇ÷½üÓÚ0µÄÊı£¬±ÜÃâÓÅ»¯
+% è®­ç»ƒBPç¥ç»ç½‘ç»œåˆ†ç±»
+data_Xtrain = images(:,1:numTrain);     %åŠ è½½è®­ç»ƒçš„è¾“å…¥æ•°æ®
+data_Ytrain = labels(1:numTrain,1)';    %åŠ è½½è®­ç»ƒçš„è¾“å‡ºæ•°æ®
+data_Xtest = images(:,numTrain+1:end);    %åŠ è½½æµ‹è¯•çš„è¾“å…¥æ•°æ®
+data_Ytest = labels(numTrain+1:end,1)';    %åŠ è½½æµ‹è¯•çš„è¾“å‡ºæ•°æ®
+clear images labels %æ¸…é™¤å˜é‡ï¼ŒèŠ‚çœå†…å­˜
+%ç”±äºç³»ç»Ÿä¼šä¼˜åŒ–æ‰æ•´è¡Œå…¨æ˜¯0çš„ç»´åº¦ï¼Œæ‰€ä»¥å¯¹æ•´è¡Œå…¨æ˜¯0çš„ç»´åº¦é¦–åˆ—æ·»åŠ ä¸€ä¸ªè¶‹è¿‘äº0çš„æ•°ï¼Œé¿å…ä¼˜åŒ–
 data_Xtrain(~any(data_Xtrain,2),1) = 0.0000001;
 data_Xtest(~any(data_Xtest,2),1) = 0.0000001;
 
-% ¿ªÊ¼¹¹½¨BPÍøÂç£¬Éñ¾­ÍøÂçÄÚ²¿×î×Ô¶¯½øĞĞ¹éÒ»»¯ºÍ·´¹éÒ»»¯
+% å¼€å§‹æ„å»ºBPç½‘ç»œï¼Œç¥ç»ç½‘ç»œå†…éƒ¨æœ€è‡ªåŠ¨è¿›è¡Œå½’ä¸€åŒ–å’Œåå½’ä¸€åŒ–
 net = feedforwardnet([3,4]);
 net = configure(net, data_Xtrain, data_Ytrain);
 
-%Éè¶¨²ÎÊıÍøÂç²ÎÊı
+%è®¾å®šå‚æ•°ç½‘ç»œå‚æ•°
 net.trainParam.epochs = 100;
-net.layers{1}.transferFcn='tansig';    %´«µİº¯Êı
-net=init(net);                         %³õÊ¼»¯ÍøÂç²ÎÊı
-net.trainFcn='trainlm';                %ÑµÁ·º¯Êı
+net.layers{1}.transferFcn='tansig';    %ä¼ é€’å‡½æ•°
+net=init(net);                         %åˆå§‹åŒ–ç½‘ç»œå‚æ•°
+net.trainFcn='trainlm';                %è®­ç»ƒå‡½æ•°
 
-% ¿ªÊ¼ÑµÁ·
+% å¼€å§‹è®­ç»ƒ
 net = train(net,data_Xtrain,data_Ytrain);
 
-save net net                %±£´æÑµÁ·ºÃµÄÉñ¾­ÍøÂç
-Y1 = sim(net,data_Xtest);        %ÏµÍ³×Ô´øµÄ¼ÆËãbpÉñ¾­ÍøÂçº¯Êı
-Y2 = mysim(net,data_Xtest);      %×Ô¼ºĞ´µÄ¼ÆËãbpÉñ¾­ÍøÂçº¯Êı
-Y3 = MyNet_sim(data_Xtest);      %ÓÃÓÚÒÆÖ²µÄBPÉñ¾­ÍøÂçº¯Êı
-plot(Y-data_Ytest)          %»­³öÎó²î
+save net net                %ä¿å­˜è®­ç»ƒå¥½çš„ç¥ç»ç½‘ç»œ
+Y1 = sim(net,data_Xtest);        %ç³»ç»Ÿè‡ªå¸¦çš„è®¡ç®—bpç¥ç»ç½‘ç»œå‡½æ•°
+Y2 = mysim(net,data_Xtest);      %è‡ªå·±å†™çš„è®¡ç®—bpç¥ç»ç½‘ç»œå‡½æ•°
+Y3 = MyNet_sim(data_Xtest);      %ç”¨äºç§»æ¤çš„BPç¥ç»ç½‘ç»œå‡½æ•°
+plot(Y-data_Ytest)          %ç”»å‡ºè¯¯å·®
